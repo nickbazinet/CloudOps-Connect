@@ -1,0 +1,54 @@
+# dependencies
+/node_modules
+/bower_components
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+.DS_*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+logs
+
+todo.txt
+**/*/*tbd.txt
+emailkey.js
+**/*.backup.*
+**/*.back.*
+
+psd
+thumb
+sketch
+
+package-lock.json
+
+### ide ###
+
+*.sublime*
+
+.idea/
+.vscode/
+
+
+### terraform ###
+/infrastructure/terraform/.terraform/**/*
+/infrastructure/terraform/*.zip
+/infrastructure/terraform/.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.tfstate.lock.info
