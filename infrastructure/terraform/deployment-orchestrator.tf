@@ -63,13 +63,33 @@ data "archive_file" "deployment_orchestrator" {
   output_path = "deploymentOrchestrator.zip"
 
   source {
-    content  = file("../../deployment/DeploymentRequest.py")
-    filename = "DeploymentRequest.py"
+    content  = file("../../deployment/deploymentRequest.py")
+    filename = "deploymentRequest.py"
   }
 
   source {
     content  = file("../../deployment/deploymentOrchestrator.py")
     filename = "deploymentOrchestrator.py"
+  }
+
+  source {
+    content  = file("../../deployment/adminDeploymentApi.py")
+    filename = "adminDeploymentApi.py"
+  }
+
+  source {
+    content  = file("../../deployment/clientDeploymentApi.py")
+    filename = "clientDeploymentApi.py"
+  }
+
+  source {
+    content  = file("../../deployment/deploymentApi.py")
+    filename = "deploymentApi.py"
+  }
+
+  source {
+    content  = file("../../deployment/commons.py")
+    filename = "commons.py"
   }
 }
 
@@ -89,6 +109,10 @@ resource "aws_lambda_function" "deployment_orchestrator" {
       ENVIRONMENT                   = var.environment
     }
   }
+
+  layers = [
+    local.lambda_powertools_arn
+  ]
 }
 
 resource "aws_lambda_permission" "apigw_orchestrator" {

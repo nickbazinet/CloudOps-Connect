@@ -27,4 +27,5 @@ provider "aws" {
 
 locals {
   python_requests_layer_arn = "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p39-requests:11"
+  lambda_powertools_arn = "arn:aws:lambda:us-east-1:017000801446:layer:AWSLambdaPowertoolsPythonV2:32"
 }

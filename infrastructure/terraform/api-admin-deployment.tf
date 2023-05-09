@@ -41,6 +41,9 @@ resource "aws_api_gateway_method" "admin_deployment_put" {
   http_method      = "PUT"
   authorization    = "NONE"
   api_key_required = true
+  request_parameters = {
+    "method.request.querystring.id"   = true
+  }
 }
 
 resource "aws_api_gateway_integration" "admin_deployment_put_integration" {
