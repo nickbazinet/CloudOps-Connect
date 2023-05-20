@@ -34,12 +34,11 @@ resource "aws_iam_role" "deployment_orchestrator_exec" {
         },
         {
           "Action" : [
-            "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents"
           ],
           "Effect" : "Allow",
-          "Resource" : ["*"]
+          "Resource" : ["${aws_cloudwatch_log_group.deployment_orchestrator.arn}:*"]
         },
         {
           "Action" : [
@@ -95,7 +94,7 @@ data "archive_file" "deployment_orchestrator" {
 
 resource "aws_lambda_function" "deployment_orchestrator" {
   filename      = "deploymentOrchestrator.zip"
-  function_name = "${var.identifier}-${var.environment}-DeploymentOrchestrator"
+  function_name = local.deployment_orchestrator_function_name
   role          = aws_iam_role.deployment_orchestrator_exec.arn
   handler       = "deploymentOrchestrator.lambda_handler"
 
@@ -113,6 +112,11 @@ resource "aws_lambda_function" "deployment_orchestrator" {
   layers = [
     local.lambda_powertools_arn
   ]
+}
+
+resource "aws_cloudwatch_log_group" "deployment_orchestrator" {
+  name              = "/aws/lambda/${local.deployment_orchestrator_function_name}"
+  retention_in_days = 7
 }
 
 resource "aws_lambda_permission" "apigw_orchestrator" {

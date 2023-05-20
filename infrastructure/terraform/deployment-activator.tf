@@ -22,12 +22,11 @@ resource "aws_iam_role" "deployment_activator_exec" {
       "Statement" : [
         {
           "Action" : [
-            "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents"
           ],
           "Effect" : "Allow",
-          "Resource" : ["*"]
+          "Resource" : ["${aws_cloudwatch_log_group.deployment_activator.arn}:*"]
         },
         {
           "Action" : [
@@ -73,7 +72,7 @@ data "archive_file" "deployment_activator" {
 
 resource "aws_lambda_function" "deployment_activator" {
   filename      = "deploymentActivator.zip"
-  function_name = "${var.identifier}-${var.environment}-DeploymentActivator"
+  function_name = local.deployment_activator_function_name
   role          = aws_iam_role.deployment_activator_exec.arn
   handler       = "deploymentActivator.lambda_handler"
 
@@ -92,5 +91,9 @@ resource "aws_lambda_function" "deployment_activator" {
   layers = [
     local.python_requests_layer_arn
   ]
+}
 
+resource "aws_cloudwatch_log_group" "deployment_activator" {
+  name              = "/aws/lambda/${local.deployment_activator_function_name}"
+  retention_in_days = 7
 }
